@@ -24,7 +24,7 @@ export default function Footer() {
             <RiArrowUpSLine size={30} />
           </button>
         </div>
-        <div className="container flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-2">
+        <div className="container flex flex-row items-center justify-between gap-2 mt-2">
           <div className="flex items-center gap-2 item">
             <Image
               src="/assets/icons/email.svg"

@@ -11,12 +11,37 @@ export default function Navbar() {
       // We're just using media queries with CSS
       // This useEffect hook is mainly to demonstrate how you could
       // add additional JavaScript functionality if needed
-      const isMobile = window.innerWidth < 992;
+      const isMobile = window.innerWidth < 900;
       console.log(`Screen is now ${isMobile ? "mobile" : "desktop"} size`);
+    };
+
+    // Initialize Bootstrap dropdowns manually for mobile menu
+    const initMobileDropdowns = () => {
+      if (typeof window !== "undefined" && typeof document !== "undefined") {
+        const dropdownToggleList =
+          document.querySelectorAll(".dropdown-toggle");
+
+        // Add click event listeners to all dropdown toggles in mobile menu
+        dropdownToggleList.forEach((dropdownToggle) => {
+          dropdownToggle.addEventListener("click", (e) => {
+            if (window.innerWidth < 900) {
+              e.preventDefault();
+              const parent = (dropdownToggle as HTMLElement).closest(
+                ".dropdown"
+              );
+              const dropdownMenu = parent?.querySelector(".dropdown-menu");
+
+              // Toggle the 'show' class
+              dropdownMenu?.classList.toggle("show");
+            }
+          });
+        });
+      }
     };
 
     // Run on mount and when window resizes
     handleResize();
+    initMobileDropdowns();
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -28,7 +53,7 @@ export default function Navbar() {
     <header className="landing-header">
       <style jsx global>{`
         /* Desktop dropdown hover effects */
-        @media (min-width: 992px) {
+        @media (min-width: 900px) {
           .dropdown-menu {
             opacity: 0;
             visibility: hidden;
@@ -79,7 +104,7 @@ export default function Navbar() {
         }
 
         /* Fix Bootstrap toggle behavior with our custom hover on desktop */
-        @media (min-width: 992px) {
+        @media (min-width: 900px) {
           .dropdown-toggle::after {
             display: none !important;
           }
@@ -242,7 +267,7 @@ export default function Navbar() {
             width={20}
             height={20}
           />
-          <h6 className="mb-0 font-semibold text-base text-[#5B5B5B]">
+          <h6 className="mb-0 font-semibold text-[14px] text-[#5B5B5B]">
             کد پستی: ۱۱۱۳۱-۷۴۸۱۱ - صندوق پستی: ۹۸۷۶-۱۲۳۴۵۶
           </h6>
         </div>
@@ -254,7 +279,7 @@ export default function Navbar() {
             width={20}
             height={20}
           />
-          <h6 className="mb-0 font-semibold text-base text-[#5B5B5B]">
+          <h6 className="mb-0 font-semibold text-[14px] text-[#5B5B5B]">
             مرکز تماس : ۲۸۴۹-۴۲۴-۰۲۱
           </h6>
         </div>
@@ -266,7 +291,7 @@ export default function Navbar() {
             width={20}
             height={20}
           />
-          <h6 className="mb-0 font-semibold text-base text-[#5B5B5B]">
+          <h6 className="mb-0 font-semibold text-[14px] text-[#5B5B5B]">
             آدرس: استان فارس، کیلومتر ۳۵ جاده داراب - شیراز
           </h6>
         </div>
@@ -665,7 +690,11 @@ export default function Navbar() {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a className="dropdown-item" href="/basij/shahid-rajaee">
+                    <a
+                      className="dropdown-item"
+                      href="/basij/shahid-rajaee"
+                      style={{ color: "#f47920", fontWeight: "bold" }}
+                    >
                       پایگاه بسیج شهید رجایی
                     </a>
                   </li>
@@ -1151,7 +1180,7 @@ export default function Navbar() {
                       >
                         <path
                           d="M13.2797 5.9668L8.93306 10.3135C8.41973 10.8268 7.57973 10.8268 7.06639 10.3135L2.71973 5.9668"
-                          stroke="#fff"
+                          stroke="#000"
                           strokeWidth="1.5"
                           strokeMiterlimit="10"
                           strokeLinecap="round"

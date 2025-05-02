@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { Swiper as SwiperType } from "swiper";
 import { Post } from "@/lib/api";
 import { parseImageURL } from "@/lib/parseImageURL";
+import { SecondaryButton } from "./SecondaryButton";
 
 interface HonorsSectionProps {
   posts: Post[];
@@ -68,7 +69,7 @@ export default function HonorsSection({ posts }: HonorsSectionProps) {
         <Image src="/assets/icons/medal.svg" alt="" width={24} height={24} />
         <span className="text-base">افتخارات</span>
         <hr />
-        <button className="btn btn-secondary">مشاهده همه</button>
+        <SecondaryButton text="مشاهده همه" />
       </div>
       <div className="relative">
         <div className="container overflow-x-hidden mt-5">
@@ -78,7 +79,7 @@ export default function HonorsSection({ posts }: HonorsSectionProps) {
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="swiper-slide h-auto relative absolute group/slide"
+                  className="swiper-slide h-auto  absolute group/slide"
                 >
                   <div className="relative h-full rounded-xs">
                     <div>
@@ -88,13 +89,10 @@ export default function HonorsSection({ posts }: HonorsSectionProps) {
                           "/assets/images/medal.jfif"
                         }
                         alt={post.title}
-                        className="rounded-xs"
+                        className="border-8 rounded-md border-gray-200"
                         width={200}
                         height={150}
                       />
-                    </div>
-                    <div className="mt-2 text-center">
-                      <h3 className="text-sm font-medium">{post.title}</h3>
                     </div>
                   </div>
                 </div>

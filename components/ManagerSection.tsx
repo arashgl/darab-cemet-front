@@ -13,14 +13,14 @@ export default function ManagerSection() {
   if (!isMounted) return null;
 
   return (
-    <section className="container" style={{ marginTop: "14em" }}>
+    <section className="container" style={{ marginTop: "16em" }}>
       <div className="d-flex justify-between mt-5 flex-col-revers-mobile">
         <div
           className="body-div flex-1 w-100 lg:w-50"
           style={{ position: "relative" }}
           data-aos="fade-down"
         >
-          <div className="mt-5">
+          <div>
             <span className="text-4xl color-primary font-bold mt-5 title">
               پیام مدیر عامل
             </span>
@@ -32,15 +32,7 @@ export default function ManagerSection() {
               در عرصه صنعت سیمان کشور، نمونه بارزی از موفقیت و سربلندی محسوب
               می‌شود
             </p>
-            <button
-              className="btn color-primary text-lg"
-              style={{
-                color: "#F25822 !important",
-                fontSize: "18px !important",
-              }}
-            >
-              ادامه مطلب ...
-            </button>
+            <button className="text-lg text-orange-600 ">ادامه مطلب ...</button>
             <div className="d-flex align-items-center gap-2 w-fit p-2 px-4 mt-4 bg-[#F25822] rounded-md">
               <Image
                 src="/assets/icons/mobile.svg"
@@ -48,7 +40,7 @@ export default function ManagerSection() {
                 width={24}
                 height={24}
               />
-              <h6 className="faNumber text-xl text-white mb-0 font-semibold">
+              <h6 className="faNumber  text-white mb-0 font-semibold">
                 تماس با مدیر عامل ۰۲۱۲۶۴۰۵۵۲۱ داخلی ۳۰۵
               </h6>
             </div>
@@ -60,7 +52,7 @@ export default function ManagerSection() {
                 height={24}
               />
               <h6
-                className="text-xl text-[#818286] mb-0 font-semibold"
+                className="text-[#818286] mb-0 font-semibold"
                 style={{ color: "#818286" }}
               >
                 ارسال پیام به مدیر عامل
@@ -71,8 +63,8 @@ export default function ManagerSection() {
         <div className="img-box flex-1 w-100 lg:w-50" data-aos="fade-down">
           <Image
             src="/assets/images/managment.svg"
-            className="rounded-lg md:rounded-lg lg:rounded-3xl"
             alt="Manager Portrait"
+            className="scale-105 mb-[-1px] max-md:scale-100 max-md:mb-0"
             width={600}
             height={400}
           />

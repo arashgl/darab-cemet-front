@@ -41,22 +41,6 @@ export default function NotFound() {
               >
                 بازگشت به صفحه اصلی
               </Link>
-
-              <Link
-                href="/product"
-                className="btn btn-outline px-6 py-3 text-lg font-medium"
-                style={{ border: "1px solid #5DCCDC", color: "#5DCCDC" }}
-              >
-                مشاهده محصولات
-              </Link>
-
-              <Link
-                href="/blog"
-                className="btn btn-outline px-6 py-3 text-lg font-medium"
-                style={{ border: "1px solid #5DCCDC", color: "#5DCCDC" }}
-              >
-                مشاهده بلاگ
-              </Link>
             </div>
           </div>
         </div>

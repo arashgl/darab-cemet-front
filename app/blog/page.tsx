@@ -1,8 +1,21 @@
 import Footer from "@/components/Footer";
-import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
-import { parseImageURL } from "@/lib/parseImageURL";
+import { RiArrowLeftSLine } from "react-icons/ri";
+import BlogCard from "./components/BlogCard";
+import TagFilter from "./components/TagFilter";
+import Pagination from "./components/Pagination";
+
+// Sections from backend
+export enum PostSection {
+  OCCASIONS = "مناسبت ها",
+  ANNOUNCEMENTS = "اطلاعیه ها",
+  NEWS = "اخبار ها",
+  ACHIEVEMENTS = "افتخارات",
+}
+
+// Default section to display
+const DEFAULT_SECTION = PostSection.NEWS;
 
 interface BlogPost {
   id: string;
@@ -11,12 +24,14 @@ interface BlogPost {
   leadPicture?: string;
   content?: string;
   section?: string;
+  description?: string;
   createdAt?: string;
   updatedAt?: string;
   author?: {
     name: string;
     avatar?: string;
   };
+  tags?: string[];
 }
 
 interface BlogPostsResponse {
@@ -28,19 +43,40 @@ interface BlogPostsResponse {
   };
 }
 
-async function getBlogPosts(): Promise<BlogPostsResponse> {
+// Server-side data fetching
+async function getBlogPosts(
+  page: number = 1,
+  limit: number = 9,
+  section?: PostSection,
+  title?: string,
+  tags?: string[]
+): Promise<BlogPostsResponse> {
   try {
-    // Check if URL is properly defined
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-    const url = `${apiUrl}/posts?section=blog`;
 
-    // Fetch from your backend with blog section filter
+    // Build query params
+    const params = new URLSearchParams();
+    if (section) {
+      params.append("section", section);
+    }
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
+
+    if (title) params.append("title", title);
+    if (tags && tags.length > 0) params.append("tags", tags.join(","));
+
+    const url = `${apiUrl}/posts?${params.toString()}`;
+
+    console.log(`Fetching blog posts from: ${url}`);
+
     const response = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 3600 }, // Revalidate cache every hour
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch blog posts");
+      throw new Error(
+        `Failed to fetch blog posts: ${response.status} ${response.statusText}`
+      );
     }
 
     return response.json();
@@ -50,116 +86,165 @@ async function getBlogPosts(): Promise<BlogPostsResponse> {
   }
 }
 
-// Format date to Persian format
-function formatDate(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    // You can implement Persian date formatting here
-    // For now, just returning a simple format
-    return date.toLocaleDateString("fa-IR");
-  } catch {
-    return "تاریخ نامشخص";
-  }
-}
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: {
+    page?: string;
+    search?: string;
+    tags?: string;
+    section?: string;
+  };
+}) {
+  const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
+  const searchQuery = searchParams.search || "";
+  const tagFilters = searchParams.tags ? searchParams.tags.split(",") : [];
+  const sectionFilter =
+    (searchParams.section as PostSection) || DEFAULT_SECTION;
 
-export default async function BlogPage() {
-  const blogPosts = await getBlogPosts();
+  // Fetch blog posts with filters
+  const blogPosts = await getBlogPosts(
+    currentPage,
+    9,
+    sectionFilter,
+    searchQuery || undefined,
+    tagFilters.length > 0 ? tagFilters : undefined
+  );
+
+  // Extract all unique tags from posts for filter options
+  const allTags = Array.from(new Set<string>());
+  blogPosts.data.forEach((post) => {
+    if (post.tags) {
+      post.tags.forEach((tag) => allTags.includes(tag) || allTags.push(tag));
+    }
+  });
+
+  // Get all available sections
+  const sections = Object.values(PostSection);
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
-      {/* Site header */}
-      <Navbar />
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Site header with higher z-index */}
+      <div className="relative z-50">
+        <Navbar />
+      </div>
 
-      <main>
-        {/* Breadcrumb */}
-        <div className="breadcrumb-page w-100 p-2 mt-4 py-3">
-          <div className="d-flex align-items-center container gap-4">
-            <h6 className="text-base font-normal mb-0 title">صفحه اصلی</h6>
-            <span>
-              <Image
-                src="/assets/icons/arrow-left.svg"
-                alt="arrow"
-                width={16}
-                height={16}
-              />
-            </span>
-            <h6 className="text-base font-normal active mb-0">بلاگ</h6>
+      <main className="relative">
+        {/* Hero Section - Compact version */}
+        <section className="relative bg-gradient-to-r from-[#F25822] to-[#676767] py-6 text-white border-b border-[#e34918] shadow-md">
+          <div className="absolute inset-0 opacity-10"></div>
+          <div className="container mx-auto px-4 relative">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold mb-1" dir="rtl">
+                  وبلاگ
+                </h1>
+                <p className="text-sm text-white/90" dir="rtl">
+                  آخرین اخبار و مقالات در حوزه صنعت سیمان
+                </p>
+              </div>
+
+              {/* Search */}
+              {/* <BlogSearch initialQuery={searchQuery} className="mt-4 md:mt-0" /> */}
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Banner Image */}
-        <div className="img-box mt-4">
-          <Image
-            src="/assets/images/blog-banner.svg"
-            alt="Blog Banner"
-            width={1920}
-            height={400}
-            style={{ width: "100%", height: "auto" }}
-            priority
-          />
-        </div>
+        {/* Filters and Blog Posts */}
+        <section className="container mx-auto px-4 py-6">
+          {/* Filters */}
+          <div className="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <h2
+              className="text-lg font-semibold mb-3 text-right text-gray-800"
+              dir="rtl"
+            >
+              فیلتر بر اساس:
+            </h2>
 
-        {/* Blog Posts Section */}
-        <div className="container info-section">
-          <h1 className="text-5xl font-semibold color-primary text-center mt-5">
-            بلاگ سیمان داراب
-          </h1>
+            {/* Section filter */}
+            <div className="mb-4" dir="rtl">
+              <h3 className="text-sm font-medium mb-2 text-gray-700">بخش:</h3>
+              <div className="flex flex-wrap gap-2">
+                {sections.map((section) => (
+                  <Link
+                    key={section}
+                    href={`/blog?section=${encodeURIComponent(section)}`}
+                    className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      sectionFilter === section
+                        ? "bg-[#F25822] text-white font-medium shadow-sm ring-1 ring-[#e34918]"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
+                    }`}
+                  >
+                    {section}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.data && blogPosts.data.length > 0 ? (
-              blogPosts.data.map((post) => (
-                <div
-                  key={post.id}
-                  className="blog-card bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
-                >
-                  <div className="blog-image relative h-48">
-                    <Image
-                      src={
-                        parseImageURL(post.leadPicture) ||
-                        "/assets/images/blog-default.jpg"
-                      }
-                      alt={post.title}
-                      fill
-                      style={{ objectFit: "cover" }}
-                      className="rounded-t-md"
-                    />
-                  </div>
-                  <div className="p-5 flex-grow flex flex-col">
-                    <div className="mb-3 text-sm color-info">
-                      {post.createdAt && (
-                        <span>{formatDate(post.createdAt)}</span>
-                      )}
-                      {post.author?.name && (
-                        <>
-                          <span className="mx-2">|</span>
-                          <span>{post.author.name}</span>
-                        </>
-                      )}
-                    </div>
-                    <h3 className="text-xl font-semibold color-primary mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm color-info flex-grow line-clamp-3 mb-4">
-                      {post.summary || "توضیحات مقاله در دسترس نیست."}
-                    </p>
-                    <Link
-                      href={`/blog/${post.id}`}
-                      className="btn btn-primary text-center w-full mt-auto"
-                    >
-                      مطالعه بیشتر
-                    </Link>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-10">
-                <p className="text-xl color-info">مقاله‌ای یافت نشد.</p>
+            {/* Tag filter */}
+            {allTags.length > 0 && (
+              <div dir="rtl">
+                <h3 className="text-sm font-medium mb-2 text-gray-700">
+                  برچسب‌ها:
+                </h3>
+                <TagFilter tags={allTags} activeTags={tagFilters} />
               </div>
             )}
           </div>
 
-          {/* Pagination can be added here */}
-        </div>
+          {/* Results info */}
+          <div className="flex justify-between items-center mb-4 px-2">
+            <p className="text-sm text-gray-600 font-medium" dir="rtl">
+              {blogPosts.meta.totalItems} مقاله یافت شد
+              {searchQuery && ` برای "${searchQuery}"`}
+              {sectionFilter && ` در بخش "${sectionFilter}"`}
+              {tagFilters.length > 0 && ` با برچسب ${tagFilters.join(", ")}`}
+            </p>
+          </div>
+
+          {/* Blog posts grid */}
+          {blogPosts.data.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+              {blogPosts.data.map((post) => (
+                <BlogCard
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  summary={post.summary}
+                  leadPicture={post.leadPicture}
+                  createdAt={post.createdAt}
+                  description={post.description}
+                  tags={post.tags}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="py-12 text-center bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full bg-gray-100">
+                <RiArrowLeftSLine className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2" dir="rtl">
+                مقاله‌ای یافت نشد
+              </h3>
+              <p className="text-gray-600 mb-4 text-sm" dir="rtl">
+                با جستجوی عبارت‌های دیگر یا حذف فیلترها دوباره تلاش کنید.
+              </p>
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center px-4 py-2 text-sm border border-transparent font-medium rounded-md text-white bg-[#F25822] hover:bg-[#e34918] shadow-sm"
+                dir="rtl"
+              >
+                مشاهده همه مقالات
+              </Link>
+            </div>
+          )}
+
+          {/* Pagination */}
+          <Pagination
+            currentPage={blogPosts.meta.currentPage}
+            totalPages={blogPosts.meta.totalPages}
+          />
+        </section>
       </main>
 
       {/* Site footer */}

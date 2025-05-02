@@ -1,25 +1,18 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import Header from "@/components/Header";
+import { useEffect, useState } from "react";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import type { Swiper as SwiperType } from "swiper";
 import Navbar from "@/components/Navbar";
 
 export default function AboutUs() {
   const [mounted, setMounted] = useState(false);
-  const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
     setMounted(true);
 
-    const initSwiper = async () => {
+    const initAOS = async () => {
       try {
-        // Dynamically import Swiper
-        const SwiperModule = await import("swiper");
-        const Swiper = SwiperModule.default;
-
         // Initialize AOS
         import("aos").then((AosModule) => {
           AosModule.default.init({
@@ -28,41 +21,12 @@ export default function AboutUs() {
             easing: "ease-out-cubic",
           });
         });
-
-        // Initialize gallery Swiper
-        if (document.querySelector(".gallery-swiper")) {
-          swiperRef.current = new Swiper(".gallery-swiper", {
-            slidesPerView: 2,
-            spaceBetween: 24,
-            pagination: {
-              el: ".gallery-pagination",
-              clickable: true,
-            },
-            breakpoints: {
-              640: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-            },
-          });
-        }
       } catch (error) {
-        console.error("Failed to initialize swiper:", error);
+        console.error("Failed to initialize AOS:", error);
       }
     };
 
-    initSwiper();
-
-    return () => {
-      if (swiperRef.current) {
-        swiperRef.current.destroy();
-      }
-    };
+    initAOS();
   }, []);
 
   if (!mounted) {
@@ -318,31 +282,29 @@ export default function AboutUs() {
               </button>
             </div>
 
-            <div className="overflow-x-hidden mt-5">
-              <div className="testimonials-carousel gallery-swiper swiper-container group">
-                <div className="swiper-wrapper w-fit" data-highlighter>
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="swiper-slide h-auto relative absolute group/slide"
-                    >
-                      <div className="relative h-full rounded-xl">
-                        <div>
-                          <Image
-                            src="/assets/images/image.png"
-                            alt={`Gallery image ${index + 1}`}
-                            width={300}
-                            height={290}
-                            className="rounded-xl"
-                            style={{ height: "290px" }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+            <div className="mt-5 mb-10">
+              <div className="flex flex-row gap-2 overflow-x-auto">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="relative flex-shrink-0"
+                    style={{ width: "calc(25% - 6px)" }}
+                  >
+                    <Image
+                      src="/assets/images/image.png"
+                      alt={`Gallery image ${index + 1}`}
+                      width={300}
+                      height={200}
+                      className="rounded-md"
+                      style={{
+                        height: "200px",
+                        width: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="swiper-pagination gallery-pagination"></div>
             </div>
           </section>
         </div>

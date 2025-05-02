@@ -78,6 +78,7 @@ body {
 
 .swiper-pagination {
   bottom: 0 !important;
+  margin-top: 15px !important;
 }
 
 /* Fix for slider pagination */
@@ -897,6 +898,7 @@ footer .info a {
   color: #667085 !important;
   border: 1px solid #dddddd !important;
   font-weight: 400 !important;
+  z-index: 1000;
 }
 
 .nav-link {
@@ -1017,9 +1019,6 @@ footer .info a {
 }
 .swiper-pagination.notif-pagination .swiper-pagination-bullet-active {
   background-color: #f25822;
-}
-.swiper-slide {
-  box-shadow: 0 4px 4px 0 #00000010, 0 4px 4px 0 #00000010;
 }
 
 .swiper-pagination-bullet {

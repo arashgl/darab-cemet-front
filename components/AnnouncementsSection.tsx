@@ -8,13 +8,24 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { Navigation, Pagination, A11y } from "swiper/modules";
-import { RiArrowRightCircleLine } from "react-icons/ri";
 import { Post } from "@/lib/api";
 import { parseImageURL } from "@/lib/parseImageURL";
+import { SecondaryButton } from "./SecondaryButton";
+import { PrimaryButton } from "./PrimaryButton";
+import { format } from "date-fns-jalali";
+import Link from "next/link";
+import { SliderButton } from "./Announcements/SliderButton";
 
 interface AnnouncementSectionProps {
   posts: Post[];
 }
+
+// Format date to Jalali (Persian) calendar format
+const formatDate = (dateString: string | Date): string => {
+  const date =
+    typeof dateString === "string" ? new Date(dateString) : dateString;
+  return format(date, "yyyy/MM/dd");
+};
 
 export default function AnnouncementSection({
   posts,
@@ -25,17 +36,17 @@ export default function AnnouncementSection({
   }
 
   return (
-    <section className="mt-6 relative mb-36">
+    <section className="mt-6 relative mb-36 md:mr-12 max-md:mr-6">
       <div className="title-div container">
         <Image src="/assets/icons/packet.svg" alt="" width={24} height={24} />
         <span className="text-base">اطلاعیه ها</span>
         <hr />
-        <button className="btn btn-secondary">مشاهده همه</button>
+        <SecondaryButton text="مشاهده همه" />
       </div>
       <div className="relative z-10">
-        <div className="pr-custom pr-custom-mobile mt-5 bg-slider overflow-visible">
-          <div className="w-full relative pb-5 sm:pr-4 overflow-visible pr-32 mr-8">
-            <div className="relative overflow-visible">
+        <div className="pr-custom relative pr-custom-mobile mt-5 bg-slider overflow-visible">
+          <div className="w-full  relative pb-5 sm:pr-4 overflow-visible pr-32 mr-8">
+            <div className=" overflow-visible">
               <div className="testimonials-carousel swiper-container overflow-visible">
                 <Swiper
                   modules={[Navigation, Pagination, A11y]}
@@ -47,7 +58,7 @@ export default function AnnouncementSection({
                   }}
                   pagination={{ el: ".notif-pagination", clickable: true }}
                   breakpoints={{
-                    320: { slidesPerView: 1, spaceBetween: 16 },
+                    320: { slidesPerView: 1, spaceBetween: 13 },
                     640: { slidesPerView: 2, spaceBetween: 20 },
                     768: { slidesPerView: 3, spaceBetween: 20 },
                     1024: { slidesPerView: 3, spaceBetween: 24 },
@@ -57,11 +68,12 @@ export default function AnnouncementSection({
                   onSlideChange={() => console.log("slide change")}
                   onSwiper={(swiper) => console.log(swiper)}
                 >
+                  <SliderButton />
                   {/* Swiper Slides */}
                   {posts.map((post) => (
                     <SwiperSlide key={post.id} className="overflow-visible">
-                      <div className="relative bg-white md:rounded-lg lg:rounded-3xl max-sm:p-3 lg:p-4 hover:shadow-xl p-3 rounded-xl border border-[#eaeaea] shadow-md z-10 overflow-visible h-full transition duration-300">
-                        <div className="img-box w-full h-44 mb-4">
+                      <div className="relative min-h-[430px] max-md:min-h-[390px] w-72 max-md:w-64 bg-white md:rounded-lg lg:rounded-3xl max-sm:p-3 lg:p-4 p-3 rounded-xl border border-[#eaeaea] shadow-md z-10 overflow-visible transition duration-300">
+                        <div className="w-full h-44">
                           <Image
                             className="rounded-lg object-cover w-full h-full"
                             src={
@@ -69,13 +81,13 @@ export default function AnnouncementSection({
                               "/assets/images/news-img.jfif"
                             }
                             alt={post.title}
-                            width={500}
+                            width={300}
                             height={250}
                             priority
                           />
                         </div>
-                        <div className="relative">
-                          <div className="notif-body px-2">
+                        <div className="flex flex-col h-[220px] max-md:h-[180px] justify-between relative">
+                          <div className="mt-4 px-2">
                             <h3 className="text-lg font-bold mt-2 mb-3 title">
                               {post.title}
                             </h3>
@@ -83,13 +95,13 @@ export default function AnnouncementSection({
                               {post.description}
                             </p>
                           </div>
-                          <div className="flex items-center justify-between gap-4 mt-4 w-full">
-                            <span className="text-sm faNumber text-[#BCBCBC]">
-                              زمان مطالعه {post.readingTime} دقیقه
+                          <div className="flex items-center justify-between gap-2 mt-4 w-full">
+                            <span className="text-[12px] faNumber text-[#BCBCBC]">
+                              تاریخ انتشار: {formatDate(post.createdAt)}
                             </span>
-                            <button className="btn btn-primary px-4 py-1 text-base">
-                              ادامه مطلب
-                            </button>
+                            <Link href={`/news/${post.id}`}>
+                              <PrimaryButton text="ادامه مطلب" />
+                            </Link>
                           </div>
                         </div>
                       </div>
@@ -99,12 +111,6 @@ export default function AnnouncementSection({
               </div>
             </div>
             <div className="swiper-pagination notif-pagination mt-4 z-10"></div>
-
-            {/* Right arrow */}
-            <RiArrowRightCircleLine
-              className="absolute top-1/2 right-[-45px] transform -translate-y-1/2 pointer-events-auto w-10 h-10 bg-white border rounded-full "
-              fill="#F25822"
-            />
           </div>
         </div>
       </div>

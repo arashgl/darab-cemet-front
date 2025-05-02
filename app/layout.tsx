@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "../style.css";
 
 import Script from "next/script";
-import AuthProvider from "@/components/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,8 +31,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} font-inter antialiased`}>
-        <AuthProvider>{children}</AuthProvider>
-
+        {children}
         {/* Scripts */}
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

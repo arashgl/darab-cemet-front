@@ -2,9 +2,17 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import type { Swiper as SwiperType } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 import { Post } from "@/lib/api";
 import { parseImageURL } from "@/lib/parseImageURL";
+import Link from "next/link";
+import { SecondaryButton } from "./SecondaryButton";
+import { A11y, Navigation, Pagination } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 
 interface EventsSectionProps {
   posts: Post[];
@@ -67,135 +75,109 @@ export default function EventsSection({ posts }: EventsSectionProps) {
   if (!isMounted || !posts || posts.length === 0) return null;
 
   return (
-    <section className="mt-6 mb-[220px]">
+    <section className="mt-5 min-h-[550px] md:mr-12 max-md:mr-6 mb-12">
       <div className="title-div container">
-        <Image src="/assets/icons/calendar.svg" alt="" width={24} height={24} />
-        <span className="text-base">اطلاعیه ها</span>
+        <Image src="/assets/icons/calendar.svg" alt="" width={16} height={16} />
+        <span className="text-xs">مناسبت ها</span>
         <hr />
-        <button className="btn btn-secondary">مشاهده همه</button>
+        <Link href="/events">
+          <SecondaryButton text="مشاهده همه" />
+        </Link>
       </div>
       <div className="relative">
         <div
-          className="pr-custom pr-custom-mobile mt-5 bg-info-slider"
+          className="pr-custom pr-custom-mobile mt-2 bg-info-slider"
           style={{
             backgroundImage: "url('/assets/images/bg.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundColor: "rgba(100, 100, 100, 0.796)",
             backgroundBlendMode: "hue",
+            minHeight: "auto",
           }}
         >
           <div
-            className="w-100 relative pb-5"
+            className="w-100 relative pb-2"
             style={{
               overflowX: "hidden",
-              padding: "0 2em",
+              padding: "0 1em",
             }}
           >
-            <div className="relative">
-              <div className="testimonials-carousel reason-swiper swiper-container group">
-                <div className="swiper-wrapper w-fit" data-highlighter>
-                  {/* Swiper Slides */}
-                  {posts.map((post) => (
-                    <div
-                      key={post.id}
-                      className="swiper-slide h-auto relative rounded-3xl group/slide"
-                    >
-                      <div className="relative h-full rounded-lg bg-white md:rounded-lg lg:rounded-3xl p-4 z-20 overflow-hidden flex flex-col">
-                        <div className="img-box">
-                          <Image
-                            src={
-                              parseImageURL(post.leadPicture) ||
-                              "/assets/images/img.jfif"
-                            }
-                            alt={post.title}
-                            className="rounded-lg lg:rounded-3xl md:rounded-3xl w-full h-[100px] object-cover"
-                            width={200}
-                            height={150}
-                          />
+            <div className="testimonials-carousel swiper-container overflow-visible">
+              <Swiper
+                modules={[Navigation, Pagination, A11y]}
+                spaceBetween={24}
+                slidesPerView={3}
+                navigation={{
+                  nextEl: ".carousel-next",
+                  prevEl: ".carousel-prev",
+                }}
+                pagination={{ el: ".notif-pagination", clickable: true }}
+                breakpoints={{
+                  320: { slidesPerView: 1, spaceBetween: 13 },
+                  640: { slidesPerView: 2, spaceBetween: 20 },
+                  768: { slidesPerView: 3, spaceBetween: 20 },
+                  1024: { slidesPerView: 3, spaceBetween: 24 },
+                  1280: { slidesPerView: 4, spaceBetween: 24 },
+                }}
+                className="overflow-visible p-2"
+                onSlideChange={() => console.log("slide change")}
+                onSwiper={(swiper) => console.log(swiper)}
+              >
+                {/* Swiper Slides */}
+                {/* <SliderButtonEvents /> */}
+                {posts.map((post) => (
+                  <SwiperSlide key={post.id} className="overflow-visible">
+                    <div className="relative min-h-[390px] max-md:min-h-[350px] w-72 max-md:w-64 bg-white md:rounded-lg lg:rounded-3xl max-sm:p-3 lg:p-4 p-3 rounded-xl border border-[#eaeaea] shadow-md z-10 overflow-visible transition duration-300">
+                      <div className="w-full h-40">
+                        <Image
+                          className="rounded-lg object-cover w-full h-full"
+                          src={
+                            parseImageURL(post.leadPicture) ||
+                            "/assets/images/news-img.jfif"
+                          }
+                          alt={post.title}
+                          width={300}
+                          height={250}
+                          priority
+                        />
+                      </div>
+                      <div className="flex flex-col h-[220px] max-md:h-[180px] justify-between relative">
+                        <div className="mt-1">
+                          <h3 className="text-lg font-bold mt-2 mb-3 title">
+                            {post.title}
+                          </h3>
+                          <p className="text-sm color-info text-justify item mb-4">
+                            {post.description}
+                          </p>
                         </div>
-                        <div className="mt-4 flex-grow flex flex-col">
-                          <div
-                            className="reason-body flex-grow"
-                            style={{ margin: "0" }}
-                          >
+                        <div className="flex items-center gap-2 mb-2">
+                          {post.tags.map((tag) => (
                             <span
-                              className="text-base font-semibold title block"
-                              style={{ color: "#818286" }}
+                              key={tag}
+                              className="text-[14px] border-1 p-1 rounded-md faNumber text-[#BCBCBC]"
                             >
-                              {post.title}
+                              #{tag}
                             </span>
-                            <div className="flex flex-wrap gap-2 mt-3">
-                              {post.tags &&
-                                post.tags.map((tag, index) => (
-                                  <div
-                                    key={index}
-                                    className="border-1 tag-item rounded-sm p-1 text-sm font-semibold text-[#818286]"
-                                    style={{ borderColor: "#818286" }}
-                                  >
-                                    # {tag}
-                                  </div>
-                                ))}
-                              {(!post.tags || post.tags.length === 0) && (
-                                <div
-                                  className="border-1 tag-item rounded-sm p-1 text-sm font-semibold text-[#818286]"
-                                  style={{ borderColor: "#818286" }}
-                                >
-                                  # اطلاعیه ها
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <div className="mt-5 mb-2">
-                            <button className="btn btn-primary px-4 py-1 text-base w-full">
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between gap-2 w-full">
+                          <span className="text-[12px] faNumber text-[#BCBCBC]"></span>
+                          <Link className="w-full" href={`/events/${post.id}`}>
+                            <button
+                              className={`bg-orange-600 w-full  text-white rounded-md py-[5px] px-4 text-xs md:text-sm font-medium`}
+                            >
                               مشاهده کنید
                             </button>
-                          </div>
+                          </Link>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
-            <div className="swiper-pagination reason-pagination mt-4"></div>
-          </div>
-
-          {/* Arrows */}
-          <div className="flex justify-between absolute top-1/2 -translate-y-1/2 w-full px-4 z-30 pointer-events-none">
-            <button className="carousel-prev z-20 w-12 h-12 flex items-center justify-center group bg-white rounded-full shadow pointer-events-auto">
-              <span className="sr-only">Previous</span>
-              <svg
-                width="10"
-                height="17"
-                viewBox="0 0 10 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ transform: "rotate(180deg)" }}
-              >
-                <path
-                  d="M7.73325 8.84791L8.08678 8.49437L7.73325 8.14083L1.35806 1.7653L1.35805 1.76529C1.27674 1.68398 1.26604 1.55785 1.32683 1.46539L1.36773 1.41801C1.44912 1.34514 1.56909 1.33753 1.65796 1.39595L1.70912 1.44012L8.59431 8.32531C8.67562 8.40662 8.68631 8.53275 8.62553 8.62521L8.58135 8.67638L1.69617 15.5616C1.6028 15.6549 1.45142 15.6549 1.35805 15.5616C1.27674 15.4803 1.26604 15.3541 1.32683 15.2617L1.37101 15.2105L7.73325 8.84791Z"
-                  fill="white"
-                  stroke="#81858D"
-                />
-              </svg>
-            </button>
-            <button className="carousel-next z-20 w-12 h-12 flex items-center justify-center group bg-white rounded-full shadow pointer-events-auto">
-              <span className="sr-only">Next</span>
-              <svg
-                width="10"
-                height="17"
-                viewBox="0 0 10 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.73325 8.84791L8.08678 8.49437L7.73325 8.14083L1.35806 1.7653L1.35805 1.76529C1.27674 1.68398 1.26604 1.55785 1.32683 1.46539L1.36773 1.41801C1.44912 1.34514 1.56909 1.33753 1.65796 1.39595L1.70912 1.44012L8.59431 8.32531C8.67562 8.40662 8.68631 8.53275 8.62553 8.62521L8.58135 8.67638L1.69617 15.5616C1.6028 15.6549 1.45142 15.6549 1.35805 15.5616C1.27674 15.4803 1.26604 15.3541 1.32683 15.2617L1.37101 15.2105L7.73325 8.84791Z"
-                  fill="white"
-                  stroke="#81858D"
-                />
-              </svg>
-            </button>
+            <div className="swiper-pagination reason-pagination mt-1"></div>
           </div>
         </div>
       </div>

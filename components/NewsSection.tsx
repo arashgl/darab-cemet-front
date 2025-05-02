@@ -1,6 +1,10 @@
 import React from "react";
 import { Post } from "@/lib/api";
 import { parseImageURL } from "@/lib/parseImageURL";
+import Link from "next/link";
+import { SecondaryButton } from "./SecondaryButton";
+import Image from "next/image";
+import { PrimaryButton } from "./PrimaryButton";
 
 interface NewsSectionProps {
   posts: Post[];
@@ -24,108 +28,118 @@ const NewsSection: React.FC<NewsSectionProps> = ({ posts }) => {
   };
 
   return (
-    <section className="bg-white rounded-[18px] p-4 sm:p-6 md:p-10 mx-auto my-4 sm:my-6 md:my-8 max-w-[1300px] rtl font-['IRANSans',_Tahoma,_Arial,_sans-serif]">
+    <section className="container mt-12">
       {/* Header */}
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-base md:text-lg font-medium text-[#222] ml-2">
-            آخرین اخبارها
-          </span>
-          <span className="inline-flex items-center justify-center border-[1.5px] border-[#F36F2B] rounded-lg w-7 h-7 md:w-8 md:h-8 text-[#F36F2B]">
-            <svg
-              width="18"
-              height="18"
-              className="md:w-[20px] md:h-[20px]"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <rect x="4" y="6" width="16" height="2" rx="1" fill="#F36F2B" />
-              <rect x="4" y="11" width="16" height="2" rx="1" fill="#F36F2B" />
-              <rect x="4" y="16" width="16" height="2" rx="1" fill="#F36F2B" />
-            </svg>
-          </span>
+          <svg
+            width="24"
+            height="32"
+            viewBox="0 0 29 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M20.1328 0C25.0361 0 28.33 3.3578 28.33 8.35474V22.6968C28.33 27.7374 25.1375 31.0156 20.1967 31.0468L8.19878 31.0515C3.29542 31.0515 0 27.6937 0 22.6968V8.35474C0 3.31257 3.19249 0.0358706 8.13328 0.00623837L20.1312 0H20.1328ZM20.1328 2.33939L8.14107 2.34563C4.51034 2.36746 2.33939 4.61327 2.33939 8.35474V22.6968C2.33939 26.4632 4.53062 28.7121 8.19722 28.7121L20.1889 28.7074C23.8197 28.6856 25.9906 26.4367 25.9906 22.6968V8.35474C25.9906 4.58832 23.8009 2.33939 20.1328 2.33939ZM19.8319 21.0135C20.4776 21.0135 21.0016 21.5375 21.0016 22.1832C21.0016 22.8288 20.4776 23.3529 19.8319 23.3529H8.57168C7.92601 23.3529 7.40198 22.8288 7.40198 22.1832C7.40198 21.5375 7.92601 21.0135 8.57168 21.0135H19.8319ZM19.8319 14.4842C20.4776 14.4842 21.0016 15.0083 21.0016 15.6539C21.0016 16.2996 20.4776 16.8236 19.8319 16.8236H8.57168C7.92601 16.8236 7.40198 16.2996 7.40198 15.6539C7.40198 15.0083 7.92601 14.4842 8.57168 14.4842H19.8319ZM12.8679 7.97014C13.5136 7.97014 14.0376 8.49416 14.0376 9.13984C14.0376 9.78551 13.5136 10.3095 12.8679 10.3095H8.57121C7.92554 10.3095 7.40151 9.78551 7.40151 9.13984C7.40151 8.49416 7.92554 7.97014 8.57121 7.97014H12.8679Z"
+              fill="#F25822"
+            />
+          </svg>
+          <Link className="min-w-[105px]" href="/events">
+            <span className="text-base font-medium text-gray-500 ml-2">
+              آخرین اخبارها
+            </span>
+          </Link>
         </div>
-        <button className="bg-[#FFF3ED] p-1.5 md:p-2 text-[#F36F2B] border-none rounded-lg py-1 md:py-1.5 px-3 md:px-4.5 text-xs md:text-sm font-medium cursor-pointer">
-          مشاهده همه
-        </button>
+        <div className="w-full border" />
+        <Link href="/events">
+          <SecondaryButton text="مشاهده همه" className="mr-3" />
+        </Link>
       </div>
-      <hr className="border-none border-t border-t-[#E6E6E6] m-0 mb-4 md:mb-8" />
+      <hr className="border-t border-gray-200 mb-4 md:mb-6" />
 
       {mainPost && (
-        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-4 md:gap-8 mb-6 md:mb-8">
-          {/* Main News Image on Mobile */}
-          <div className="md:hidden mb-4">
-            <img
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+          <div className="hidden md:block md:order-1">
+            <Image
+              width={100}
+              height={100}
               src={parseImageURL(mainPost.leadPicture) || ""}
               alt={mainPost.title}
-              className="w-full h-[200px] object-cover rounded-[18px] shadow-[0_2px_12px_rgba(0,0,0,0.04)]"
+              className="w-full h-64 object-cover rounded-xl shadow-sm"
+            />
+          </div>
+          {/* Main News Image on Mobile */}
+          <div className="md:hidden mb-4">
+            <Image
+              width={100}
+              height={100}
+              src={parseImageURL(mainPost.leadPicture) || ""}
+              alt={mainPost.title}
+              className="w-full h-48 object-cover rounded-xl shadow-sm"
             />
           </div>
 
           {/* Main News Text */}
-          <div>
-            <h2 className="text-[#F36F2B] font-bold text-lg sm:text-xl md:text-[22px] mb-2 md:mb-4">
+          <div className="md:order-1">
+            <h2 className="text-orange-500 font-bold text-lg sm:text-xl md:text-2xl mb-2 md:mb-3">
               {mainPost.title}
             </h2>
-            <p className="text-[#444] text-sm md:text-[15px] leading-7 md:leading-8 mb-4 md:mb-8">
+            <p className="text-gray-700 min-h-[150px] text-sm md:text-base leading-6 md:leading-7 mb-4 md:mb-6 line-clamp-6 text-right rtl whitespace-pre-wrap break-words">
               {mainPost.description}
             </p>
-            <div className="flex flex-wrap items-center gap-2 md:gap-4">
-              <span className="text-xs md:text-sm text-[#A1A1A1] bg-[#F6F6F6] rounded-md py-0.5 px-2 md:px-3">
+            <div className="flex flex-wrap justify-between gap-2 md:gap-3">
+              <span className="text-xs md:text-sm text-gray-400 rounded-md py-0.5 px-2">
                 زمان مطالعه {mainPost.readingTime} دقیقه
               </span>
-              <span className="text-xs md:text-sm text-white bg-[#F36F2B] rounded-md py-0.5 px-2 md:px-3">
-                تاریخ: {formatDate(mainPost.createdAt)}
-              </span>
-              <button className="bg-[#F36F2B] text-white border-none rounded-md py-1 px-3 md:px-[18px] text-xs md:text-sm font-medium cursor-pointer md:mr-3 mt-2 md:mt-0">
-                ادامه مطلب
-              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-xs md:text-sm text-white bg-secondary rounded-md py-0.5 px-2">
+                  تاریخ: {formatDate(mainPost.createdAt)}
+                </span>
+                <Link href={`/blog/${mainPost.id}`}>
+                  <PrimaryButton text="ادامه مطلب" />
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* Main News Image on Desktop */}
-          <div className="hidden md:block">
-            <img
-              src={parseImageURL(mainPost.leadPicture) || ""}
-              alt={mainPost.title}
-              className="w-full h-[200px] md:h-[260px] object-cover rounded-[18px] shadow-[0_2px_12px_rgba(0,0,0,0.04)]"
-            />
-          </div>
         </div>
       )}
 
       {/* Sub News Cards */}
       {supportingPosts.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {supportingPosts.map((post, index) => (
+        <div className="hidden md:grid grid-cols-1  sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-5 mt-12">
+          {supportingPosts.map((post) => (
             <div
               key={post.id}
-              className="bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col h-full"
+              className="bg-white rounded-xl overflow-hidden flex flex-col h-full"
             >
-              <img
+              <Image
+                width={100}
+                height={100}
                 src={parseImageURL(post.leadPicture) || ""}
                 alt={post.title}
-                className="w-full h-[100px] sm:h-[110px] md:h-[120px] object-cover rounded-t-2xl"
+                className="w-full h-32 md:h-36 object-cover rounded-xl"
               />
-              <div className="p-3 md:p-[18px_16px_12px_16px] flex-1">
+              <div className="p-3 md:p-4 flex-1 flex flex-col">
                 <h3
-                  className={`${
-                    index === 2 ? "text-[#F36F2B]" : "text-[#222]"
-                  } font-bold text-sm md:text-base mb-2 md:mb-2.5 min-h-[40px] md:min-h-[48px]`}
+                  className={`text-orange-600 font-bold text-sm md:text-base mb-2 line-clamp-2`}
                 >
                   {post.title}
                 </h3>
-                <p className="text-[#666] text-xs md:text-sm leading-6 md:leading-8 mb-3 md:mb-4.5 min-h-[36px] md:min-h-[40px]">
-                  {post.description}
-                </p>
-                <div className="flex flex-wrap items-center gap-2 md:gap-2.5">
-                  <span className="text-[10px] md:text-xs text-[#A1A1A1] bg-[#F6F6F6] rounded-md py-0.5 px-2 md:px-2.5">
+                <div className="flex mt-auto justify-start">
+                  <span className="text-[10px] text-gray-500  rounded-md py-0.5 ">
                     زمان مطالعه {post.readingTime} دقیقه
                   </span>
-                  <span className="text-[10px] md:text-xs text-[#A1A1A1] bg-[#F6F6F6] rounded-md py-0.5 px-2 md:px-2.5">
+                  <span className="text-[10px] text-gray-500 rounded-md py-0.5 px-2">
                     تاریخ انتشار {formatDate(post.createdAt)}
                   </span>
                 </div>
+                <p className="text-gray-600 mt-4 text-xs md:text-sm md:leading-6 mb-3 flex-grow line-clamp-2">
+                  {post.description}
+                </p>
               </div>
             </div>
           ))}
