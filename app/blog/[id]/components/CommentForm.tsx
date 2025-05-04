@@ -37,7 +37,7 @@ export default function CommentForm({ postId }: CommentFormProps) {
     setError("");
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+      const apiUrl = process.env.API_URL || "http://localhost:3100";
       const response = await fetch(`${apiUrl}/posts/${postId}/comments`, {
         method: "POST",
         headers: {

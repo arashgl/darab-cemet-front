@@ -26,7 +26,7 @@ interface ProductsResponse {
 async function getProducts(): Promise<ProductsResponse> {
   try {
     // Check if URL is properly defined
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const apiUrl = process.env.API_URL || "http://localhost:3100";
     const url = `${apiUrl}/posts?section=product`;
 
     // Fetch from your backend with product section filter

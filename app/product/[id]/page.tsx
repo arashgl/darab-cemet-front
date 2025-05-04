@@ -28,7 +28,7 @@ interface GetProductParams {
 async function getProduct(id: string): Promise<Product | null> {
   try {
     // Check if URL is properly defined
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const apiUrl = process.env.API_URL || "http://localhost:3100";
     const url = `${apiUrl}/posts/${id}`;
 
     const response = await fetch(url, {

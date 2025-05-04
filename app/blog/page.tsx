@@ -52,7 +52,7 @@ async function getBlogPosts(
   tags?: string[]
 ): Promise<BlogPostsResponse> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const apiUrl = process.env.API_URL || "http://localhost:3100";
 
     // Build query params
     const params = new URLSearchParams();

@@ -71,7 +71,7 @@ function formatDate(dateString: string): string {
 async function getBlogPost(id: string): Promise<BlogPost | null> {
   try {
     // Check if URL is properly defined
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const apiUrl = process.env.API_URL || "http://localhost:3100";
     const url = `${apiUrl}/posts/${id}`;
 
     const response = await fetch(url, {
@@ -103,7 +103,7 @@ async function getRelatedPosts(
 
   try {
     // Check if URL is properly defined
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const apiUrl = process.env.API_URL || "http://localhost:3100";
 
     // Create a query with the tags
     const tagsQuery = tags.join(",");
