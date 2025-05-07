@@ -510,12 +510,11 @@ label {
   background-color: #f25822 !important;
   border-color: #f25822 !important;
 }
-.carousel {
-  z-index: -1;
-}
+
+/* Ensure dropdowns appear above other content */
 .dropdown-menu {
-  text-align: right !important;
-  margin-bottom: 1px solid #bcbcbc !important;
+  z-index: 1050 !important;
+  position: absolute !important;
 }
 .mobile-nav .dropdown-menu {
   border: 0 !important;
@@ -988,6 +987,7 @@ footer .info a {
   background-color: #25a375;
   border-radius: 0 18px 18px 0;
   padding-top: 3em;
+  width: 100vw;
   height: 365px;
 }
 

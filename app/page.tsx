@@ -39,21 +39,23 @@ export default async function Home() {
       <main className="grow">
         {/* Banner Slider */}
         <Banner />
+        <div className="md:px-24">
+          {/* News Section */}
+          {/* News Section */}
+          <NewsSection posts={newsData.data} />
 
-        {/* News Section */}
-        <NewsSection posts={newsData.data} />
+          {/* Notifications Section */}
+          <AnnouncementSection posts={announcementsData.data} />
 
-        {/* Notifications Section */}
-        <AnnouncementSection posts={announcementsData.data} />
+          {/* Manager Section */}
+          <ManagerSection />
 
-        {/* Manager Section */}
-        <ManagerSection />
+          {/* Events Section (using for announcements) */}
+          <EventsSection posts={occasionsData.data} />
 
-        {/* Events Section (using for announcements) */}
-        <EventsSection posts={occasionsData.data} />
-
-        {/* Honors Section */}
-        <HonorsSection posts={achievementsData.data} />
+          {/* Honors Section */}
+          <HonorsSection posts={achievementsData.data} />
+        </div>
       </main>
 
       {/* Site footer */}

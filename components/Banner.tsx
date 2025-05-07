@@ -49,59 +49,7 @@ export default function Banner() {
   if (!isMounted) return null;
 
   return (
-    <div id="sliderBanner" className="carousel slide" data-bs-ride="carousel">
-      <div className="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#sliderBanner"
-          data-bs-slide-to="0"
-          className="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#sliderBanner"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#sliderBanner"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-      </div>
-      <div className="carousel-inner">
-        <div className="carousel-item active">
-          <Image
-            src="/assets/images/banner.jpg"
-            className="d-block w-100"
-            alt="Darab Cement Banner"
-            width={1920}
-            height={600}
-            priority
-          />
-        </div>
-        <div className="carousel-item">
-          <Image
-            src="/assets/images/banner.jpg"
-            className="d-block w-100"
-            alt="Darab Cement Banner"
-            width={1920}
-            height={600}
-          />
-        </div>
-        <div className="carousel-item">
-          <Image
-            src="/assets/images/banner.jpg"
-            className="d-block w-100"
-            alt="Darab Cement Banner"
-            width={1920}
-            height={600}
-          />
-        </div>
-      </div>
+    <div>
       <button
         className="carousel-control-prev"
         type="button"
@@ -120,12 +68,71 @@ export default function Banner() {
         <span className="carousel-control-next-icon" aria-hidden="true"></span>
         <span className="visually-hidden">Next</span>
       </button>
-      <div className="caption-slider">
-        <div className="container item d-flex align-items-center gap-3">
-          <h6 className="text-xl text-white">
-            گاز تخصیصی به سیمانی ها ۲۱ میلیون متر مکعب کمتر از نیاز
-          </h6>
-          <button className="btn btn-primary">مشاهده بیشتر</button>
+      <div
+        id="sliderBanner"
+        className="carousel slide -z-10"
+        data-bs-ride="carousel"
+      >
+        <div className="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#sliderBanner"
+            data-bs-slide-to="0"
+            className="active"
+            aria-current="true"
+            aria-label="Slide 1"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#sliderBanner"
+            data-bs-slide-to="1"
+            aria-label="Slide 2"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#sliderBanner"
+            data-bs-slide-to="2"
+            aria-label="Slide 3"
+          ></button>
+        </div>
+        <div className="carousel-inner !-z-10">
+          <div className="carousel-item active -z-10">
+            <Image
+              src="/assets/images/banner.jpg"
+              className="d-block w-100"
+              alt="Darab Cement Banner"
+              width={1920}
+              height={600}
+              priority
+            />
+          </div>
+          <div className="carousel-item -z-10">
+            <Image
+              src="/assets/images/banner.jpg"
+              className="d-block w-100"
+              alt="Darab Cement Banner"
+              width={1920}
+              height={600}
+            />
+          </div>
+          <div className="carousel-item -z-10">
+            <Image
+              src="/assets/images/banner.jpg"
+              className="d-block w-100"
+              alt="Darab Cement Banner"
+              width={1920}
+              height={600}
+            />
+          </div>
+        </div>
+
+        <div className="caption-slider">
+          <div className="container item d-flex align-items-center gap-3">
+            <h6 className="text-xl text-white">
+              گاز تخصیصی به سیمانی ها ۲۱ میلیون متر مکعب کمتر از نیاز
+            </h6>
+            <button className="btn btn-primary">مشاهده بیشتر</button>
+          </div>
         </div>
       </div>
     </div>

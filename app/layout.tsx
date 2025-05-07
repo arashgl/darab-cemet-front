@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "شرکت سیمان داراب",
   description: "وب سایت رسمی شرکت سیمان داراب",
+  icons: {
+    icon: "/assets/images/logo-white.svg",
+  },
 };
 
 export default function RootLayout({

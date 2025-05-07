@@ -36,7 +36,7 @@ export default function AnnouncementSection({
   }
 
   return (
-    <section className="mt-6 relative mb-36 md:mr-12 max-md:mr-6">
+    <section className="mt-6 relative mb-36">
       <div className="title-div container">
         <Image src="/assets/icons/packet.svg" alt="" width={24} height={24} />
         <span className="text-base">اطلاعیه ها</span>
@@ -45,8 +45,8 @@ export default function AnnouncementSection({
       </div>
       <div className="relative z-10">
         <div className="pr-custom relative pr-custom-mobile mt-5 bg-slider overflow-visible">
-          <div className="w-full  relative pb-5 sm:pr-4 overflow-visible pr-32 mr-8">
-            <div className=" overflow-visible">
+          <div className="w-full relative pb-5 sm:pr-4 overflow-visible pr-32 mr-8">
+            <div className="overflow-visible">
               <div className="testimonials-carousel swiper-container overflow-visible">
                 <Swiper
                   modules={[Navigation, Pagination, A11y]}
@@ -60,9 +60,9 @@ export default function AnnouncementSection({
                   breakpoints={{
                     320: { slidesPerView: 1, spaceBetween: 13 },
                     640: { slidesPerView: 2, spaceBetween: 20 },
-                    768: { slidesPerView: 3, spaceBetween: 20 },
-                    1024: { slidesPerView: 3, spaceBetween: 24 },
-                    1280: { slidesPerView: 4, spaceBetween: 24 },
+                    768: { slidesPerView: 3, spaceBetween: 0 },
+                    1024: { slidesPerView: 3, spaceBetween: 0 },
+                    1280: { slidesPerView: 4, spaceBetween: 0 },
                   }}
                   className="overflow-visible p-2"
                   onSlideChange={() => console.log("slide change")}
@@ -71,7 +71,11 @@ export default function AnnouncementSection({
                   <SliderButton />
                   {/* Swiper Slides */}
                   {posts.map((post) => (
-                    <SwiperSlide key={post.id} className="overflow-visible">
+                    <SwiperSlide
+                      style={{ width: 270 }}
+                      key={post.id}
+                      className="overflow-visible"
+                    >
                       <div className="relative min-h-[430px] max-md:min-h-[390px] w-72 max-md:w-64 bg-white md:rounded-lg lg:rounded-3xl max-sm:p-3 lg:p-4 p-3 rounded-xl border border-[#eaeaea] shadow-md z-10 overflow-visible transition duration-300">
                         <div className="w-full h-44">
                           <Image
@@ -99,7 +103,7 @@ export default function AnnouncementSection({
                             <span className="text-[12px] faNumber text-[#BCBCBC]">
                               تاریخ انتشار: {formatDate(post.createdAt)}
                             </span>
-                            <Link href={`/news/${post.id}`}>
+                            <Link href={`/blog/${post.id}`}>
                               <PrimaryButton text="ادامه مطلب" />
                             </Link>
                           </div>

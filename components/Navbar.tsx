@@ -320,7 +320,9 @@ export default function Navbar() {
                   aria-expanded="false"
                 >
                   <span>سیمان داراب</span>
-                  <div style={{ width: "20px", marginRight: "5px" }}>
+                  <div
+                    style={{ width: "20px", marginRight: "5px", zIndex: 100 }}
+                  >
                     <svg
                       width="18"
                       height="18"
@@ -507,12 +509,12 @@ export default function Navbar() {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a className="dropdown-item" href="/quality/products">
+                    <Link className="dropdown-item" href="/product">
                       محصولات
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/quality/laboratory">
+                    <a className="dropdown-item" href="/laboratory">
                       آزمایشگاه
                     </a>
                   </li>
@@ -632,9 +634,9 @@ export default function Navbar() {
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/family/events">
+                    <Link className="dropdown-item" href="/blog">
                       مناسبت ها
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a className="dropdown-item" href="/family/environment">
@@ -1124,24 +1126,24 @@ export default function Navbar() {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="/family/competitions">
+                      <Link className="dropdown-item" href="/blog">
                         مسابقات
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/family/events">
+                      <Link className="dropdown-item" href="/blog">
                         مناسبت ها
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/family/environment">
+                      <Link className="dropdown-item" href="/blog">
                         محیط زیست
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/family/my-tree">
+                      <Link className="dropdown-item" href="/blog">
                         طرح درخت من
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a

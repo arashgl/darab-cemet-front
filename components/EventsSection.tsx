@@ -80,11 +80,11 @@ export default function EventsSection({ posts }: EventsSectionProps) {
         <Image src="/assets/icons/calendar.svg" alt="" width={16} height={16} />
         <span className="text-xs">مناسبت ها</span>
         <hr />
-        <Link href="/events">
+        <Link href="/blog">
           <SecondaryButton text="مشاهده همه" />
         </Link>
       </div>
-      <div className="relative">
+      <div className="relative  w-screen">
         <div
           className="pr-custom pr-custom-mobile mt-2 bg-info-slider"
           style={{
@@ -163,7 +163,7 @@ export default function EventsSection({ posts }: EventsSectionProps) {
                         </div>
                         <div className="flex items-center justify-between gap-2 w-full">
                           <span className="text-[12px] faNumber text-[#BCBCBC]"></span>
-                          <Link className="w-full" href={`/events/${post.id}`}>
+                          <Link className="w-full" href={`/blog/${post.id}`}>
                             <button
                               className={`bg-orange-600 w-full  text-white rounded-md py-[5px] px-4 text-xs md:text-sm font-medium`}
                             >

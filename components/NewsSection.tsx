@@ -46,14 +46,14 @@ const NewsSection: React.FC<NewsSectionProps> = ({ posts }) => {
               fill="#F25822"
             />
           </svg>
-          <Link className="min-w-[105px]" href="/events">
+          <Link className="min-w-[105px]" href="/blog">
             <span className="text-base font-medium text-gray-500 ml-2">
               آخرین اخبارها
             </span>
           </Link>
         </div>
         <div className="w-full border" />
-        <Link href="/events">
+        <Link href="/blog">
           <SecondaryButton text="مشاهده همه" className="mr-3" />
         </Link>
       </div>
@@ -112,7 +112,8 @@ const NewsSection: React.FC<NewsSectionProps> = ({ posts }) => {
       {supportingPosts.length > 0 && (
         <div className="hidden md:grid grid-cols-1  sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-5 mt-12">
           {supportingPosts.map((post) => (
-            <div
+            <Link
+              href={`/blog/${post.id}`}
               key={post.id}
               className="bg-white rounded-xl overflow-hidden flex flex-col h-full"
             >
@@ -141,7 +142,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ posts }) => {
                   {post.description}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

@@ -8,7 +8,8 @@ interface ProductTabsProps {
     features?: string[];
     benefits?: string[];
     applications?: string[];
-    title: string;
+    title?: string;
+    name?: string;
   };
 }
 
